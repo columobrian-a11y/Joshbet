@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>betterjoshua — daily diary</title>
+
+<!-- Fonts: a serif for headings (journal feel), a sans for body text -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>betterjoshua</h1>
+  <p class="tagline">Sleep, health, mood, habits &amp; activities — one day at a time.</p>
+
+  <!-- ============================================================
+       NAV: each button shows/hides a <section class="view"> below.
+       To add a new tab: add a button here with a matching
+       data-view, then add a <section id="view-yourname"> in <main>.
+       ============================================================ -->
+  <nav>
+    <button class="tab active" data-view="calendar">Calendar</button>
+    <button class="tab" data-view="diary">Diary</button>
+    <button class="tab" data-view="add">Add entry</button>
+    <button class="tab" data-view="progress">Progress</button>
+    <button class="tab" data-view="photos">Photos</button>
+    <button class="tab" data-view="guide">Setup guide</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ---------------- CALENDAR ---------------- -->
+  <section id="view-calendar" class="view active">
+    <div class="card">
+      <div class="calendar-header">
+        <button id="prevMonth">&larr;</button>
+        <h2 id="calendarLabel">Month</h2>
+        <button id="nextMonth">&rarr;</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"><!-- built by script.js --></div>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--rose)"></i> tough day (0-3)</span>
+        <span><i class="swatch" style="background:var(--amber)"></i> okay day (4-6)</span>
+        <span><i class="swatch" style="background:var(--sage)"></i> great day (7-10)</span>
+      </div>
+    </div>
+    <div class="card" id="calendarDetail">
+      <p style="color:var(--ink-soft)">Click a coloured day to see that entry here.</p>
+    </div>
+  </section>
+
+  <!-- ---------------- DIARY (full list, newest first) ---------------- -->
+  <section id="view-diary" class="view">
+    <div class="card">
+      <h2>Diary</h2>
+      <div id="diaryList"><!-- built by script.js --></div>
+    </div>
+  </section>
+
+  <!-- ---------------- ADD ENTRY ---------------- -->
+  <section id="view-add" class="view">
+    <div class="card">
+      <h2>Add today's entry</h2>
+      <p class="note">
+        This form doesn't save automatically — static sites (like this one on
+        Netlify) can't write to files by themselves. Fill it in, click
+        <b>Generate code</b>, then copy the result into <code>data.js</code>
+        on GitHub and commit. See the <b>Setup guide</b> tab for the full
+        walkthrough.
+      </p>
+
+      <label for="f-date">Date</label>
+      <input type="date" id="f-date" />
+
+      <label for="f-score">Overall day score (0-10)</label>
+      <input type="number" id="f-score" min="0" max="10" value="7" />
+
+      <label for="f-sleepHours">Hours slept</label>
+      <input type="number" id="f-sleepHours" step="0.5" value="7.5" />
+
+      <label for="f-sleepQuality">Sleep quality (1-5)</label>
+      <input type="number" id="f-sleepQuality" min="1" max="5" value="4" />
+
+      <label for="f-mood">Mood (1-5)</label>
+      <input type="number" id="f-mood" min="1" max="5" value="4" />
+
+      <label for="f-exercise">Exercise</label>
+      <input type="text" id="f-exercise" placeholder="e.g. 30 min run, or Rest day" />
+
+      <label>Habits</label>
+      <div id="habitCheckboxes"><!-- built by script.js from HABIT_LIST --></div>
+
+      <label for="f-activities">Activities (comma separated)</label>
+      <input type="text" id="f-activities" placeholder="e.g. Gym, Coffee with a friend" />
+
+      <label for="f-notes">Notes / diary writing</label>
+      <textarea id="f-notes" placeholder="How did today actually go?"></textarea>
+
+      <label for="f-photos">Photo filenames (comma separated, must already be uploaded to the photos/ folder)</label>
+      <input type="text" id="f-photos" placeholder="e.g. photos/sunset.jpg" />
+
+      <button class="btn" id="generateBtn">Generate code</button>
+
+      <div id="generatedCode">
+        <label>Copy this block and paste it inside the <code>entries: [ ... ]</code> list in data.js</label>
+        <pre id="codeOutput"></pre>
+        <button class="btn secondary" id="copyBtn">Copy to clipboard</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------- PROGRESS ---------------- -->
+  <section id="view-progress" class="view">
+    <div class="card">
+      <h2>Progress</h2>
+      <div class="stat-grid" id="statGrid"><!-- built by script.js --></div>
+      <canvas id="trendChart" height="220"></canvas>
+    </div>
+  </section>
+
+  <!-- ---------------- PHOTOS ---------------- -->
+  <section id="view-photos" class="view">
+    <div class="card">
+      <h2>Photos</h2>
+      <div class="photo-grid" id="photoGrid"><!-- built by script.js --></div>
+    </div>
+  </section>
+
+  <!-- ---------------- SETUP GUIDE ---------------- -->
+  <section id="view-guide" class="view">
+    <div class="card">
+      <h2>How this site actually saves your diary</h2>
+      <p>
+        This is a static site — just HTML, CSS and JavaScript, no server or
+        database. It's deployed through Netlify from your GitHub repo.
+        Your entries live in <code>data.js</code>, and every visitor sees
+        whatever is committed to that file, on any device — not just your
+        own browser.
+      </p>
+
+      <h3>Add a diary entry</h3>
+      <ol>
+        <li>Go to the <b>Add entry</b> tab and fill in the form.</li>
+        <li>Click <b>Generate code</b> and copy the block it produces.</li>
+        <li>On GitHub, open <code>data.js</code>, click the pencil (edit) icon.</li>
+        <li>Paste your new entry inside the <code>entries: [ ]</code> list — add a comma after the entry before it.</li>
+        <li>Scroll down and click <b>Commit changes</b>.</li>
+        <li>Netlify redeploys automatically in ~30 seconds. Refresh the site.</li>
+      </ol>
+
+      <h3>Add a photo</h3>
+      <ol>
+        <li>On GitHub, open the <code>photos</code> folder.</li>
+        <li>Click <b>Add file → Upload files</b> and upload your image (keep the filename simple, e.g. <code>beach-run.jpg</code>).</li>
+        <li>Commit the upload.</li>
+        <li>In your entry's <code>photos</code> list in data.js, add the path: <code>"photos/beach-run.jpg"</code></li>
+      </ol>
+
+      <h3>Add or rename a habit</h3>
+      <p>
+        Edit the <code>HABIT_LIST</code> array at the top of <code>data.js</code>,
+        then make sure every entry's <code>habits</code> object uses the same
+        names (true/false for each).
+      </p>
+
+      <p class="note">
+        Every file in this project (index.html, style.css, script.js,
+        data.js) has comments explaining what each part does and where to
+        make changes — open them in GitHub's editor whenever you want to
+        tweak the design or add a feature.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer>betterjoshua — a static site, hosted on Netlify, edited on GitHub.</footer>
+
+<!-- data.js must load before script.js, since script.js reads diaryData -->
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+/* ============================================================
+   style.css — all the visual styling lives here.
+   Colours and fonts are set once as CSS variables at the top
+   of :root, so you can re-theme the whole site by changing a
+   handful of values right here.
+   ============================================================ */
+
+:root {
+  /* ---- palette ---- */
+  --paper: #f1f3ec;       /* page background, soft sage-white paper */
+  --paper-raised: #ffffff;/* cards sitting "on top" of the page */
+  --ink: #2b2b28;         /* main text colour */
+  --ink-soft: #6b6a63;    /* secondary text colour */
+  --teal: #2f5d62;        /* primary accent — headers, active tab */
+  --amber: #d9a441;       /* mid-range score colour, highlights */
+  --rose: #c97b84;        /* low-range score colour */
+  --sage: #7c9473;        /* high-range score colour */
+  --line: #dcded2;        /* hairline borders */
+
+  /* ---- type ---- */
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+/* ---------------- header + nav (looks like notebook tabs) ---------------- */
+
+header {
+  padding: 2.5rem 1.5rem 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+header h1 {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  margin: 0 0 0.15rem;
+  color: var(--teal);
+  letter-spacing: -0.01em;
+}
+
+header .tagline {
+  color: var(--ink-soft);
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+}
+
+nav {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 2px solid var(--line);
+  flex-wrap: wrap;
+}
+
+nav button {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background: transparent;
+  border: none;
+  padding: 0.7rem 1.1rem;
+  cursor: pointer;
+  color: var(--ink-soft);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+nav button:hover { color: var(--ink); }
+
+nav button.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+  font-weight: 600;
+}
+
+/* ---------------- layout ---------------- */
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: var(--font-display);
+  color: var(--teal);
+  margin-top: 0;
+}
+
+/* ---------------- calendar ---------------- */
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar-header button {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-grid .dow {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  padding-bottom: 0.3rem;
+}
+
+.day-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink-soft);
+  cursor: default;
+}
+
+.day-cell.has-entry {
+  color: #fff;
+  cursor: pointer;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.day-cell.has-entry:hover { outline: 2px solid var(--ink); }
+
+.day-cell.empty { visibility: hidden; }
+
+.legend {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  flex-wrap: wrap;
+}
+
+.legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* ---------------- diary entry detail / list ---------------- */
+
+.entry {
+  border-bottom: 1px solid var(--line);
+  padding: 1.2rem 0;
+}
+
+.entry:last-child { border-bottom: none; }
+
+.entry-date {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--teal);
+  margin: 0 0 0.3rem;
+}
+
+.entry-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.6rem;
+}
+
+.entry-stats b { color: var(--ink); }
+
+.habit-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+
+.pill {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.pill.done {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+
+.entry-photos {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+
+.entry-photos img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+/* ---------------- forms ---------------- */
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0.9rem 0 0.3rem;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+textarea { min-height: 90px; resize: vertical; }
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.checkbox-row input { width: auto; }
+.checkbox-row label { margin: 0; text-transform: capitalize; }
+
+.btn {
+  margin-top: 1.2rem;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.3rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn:hover { opacity: 0.9; }
+
+.btn.secondary {
+  background: transparent;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+}
+
+#generatedCode {
+  display: none;
+  margin-top: 1.5rem;
+}
+
+#generatedCode pre {
+  background: #22322f;
+  color: #e5e9df;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  background: #fbf7ec;
+  border: 1px dashed var(--amber);
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+}
+
+/* ---------------- progress ---------------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-box {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-box .num {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--teal);
+  display: block;
+}
+
+.stat-box .label {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+canvas { max-width: 100%; }
+
+/* ---------------- photos grid ---------------- */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.8rem;
+}
+
+.photo-grid figure {
+  margin: 0;
+}
+
+.photo-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+.photo-grid figcaption {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin-top: 0.3rem;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  padding-bottom: 2rem;
+}
+
+@media (max-width: 600px) {
+  header h1 { font-size: 1.9rem; }
+  .entry-photos img { width: 80px; height: 80px; }
+}
